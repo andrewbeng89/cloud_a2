@@ -137,9 +137,9 @@ Now that data.csv, repos.csv and lang.json are prepared, it is time to upload th
 	
 Once the mongodb parameters have been updated for all three bash scripts, upload the data to MongoLab by executing the scripts in the EC2 command line:
 
-	``./mongoinsert_lang_data``
-	``./mongoinsert_repo_data``
-	``./mongoinsert_watch_data``
+	./mongoinsert_lang_data
+	./mongoinsert_repo_data
+	./mongoinsert_watch_data
 	
 Refreshing the MongoLab admin console for the database will show that three new collections have been made:
 
@@ -153,17 +153,14 @@ Refreshing the MongoLab admin console for the database will show that three new 
 
 In order to solve the problems stated earlier, I have created a node.js module that will perform MapReduce on the database collections using the mongoosejs mongodb driver for node. The mongoose database connection parameters in map_reduce.js would have to be updated to those for your database:
 
-	```js
 	mongoose.connect('mongodb://<user>:<password>@<host_of_created_database>/<name_of_created_database>');
-	```
-
+	
 Once this has been updated, via the EC2 command line, execute the module:
 
-	``node map_reduce.js``
+	node map_reduce.js
 	
 The result of the operation will be in this format:
 
-	```
 	Find the programming language that is found 
 	across the most number of repositories:
 	map reduce took XXXX ms
@@ -174,4 +171,4 @@ The result of the operation will be in this format:
 	most number of watchers per repo: XXXX
 	repo_id: XXXXX, repo_name: XXXXXXXXXXXXX
 	primary programming language of repo: XXXXX
-	```
+	
