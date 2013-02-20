@@ -66,12 +66,12 @@ watch.mapReduce(options, function (err, model, stats) {
   			repo.findOne({repo_id:docs[0].value.repo_id}, function (err, doc) {
   				console.log(doc.repo_name);
   				languages.findOne({repo_id:doc.repo_id.toString()}, function(err, doc) {
-  					console.log(err);
+  					if (err) return handleError(err);
   					console.log(doc);
   				});
-  				console.log(err);
+  				if (err) return handleError(err);
   			});
-  			console.log(err);
+  			if (err) return handleError(err);
   		});
 	});
 });
