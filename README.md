@@ -65,11 +65,9 @@ The public cloud platform that you will be using for this tutorial is [Amazon EC
 
 1. Install node.js on the EC2 instance by following the steps [here](http://iconof.com/blog/how-to-install-setup-node-js-on-amazon-aws-ec2-complete-guide/)
 2. Install mongodb NoSQL database system via the command line
-
-	sudo npm install mongodb -g
-
 3. Install git on via the command line
 
+    npm install mongodb -g
 	sudo apt-get install git
 
 	
