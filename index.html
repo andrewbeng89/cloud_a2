@@ -1,0 +1,222 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Cloud a2 by andrewbeng89</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Cloud a2</h1>
+        <p>SMU IS429 Assignment 2</p>
+
+        <p class="view"><a href="https://github.com/andrewbeng89/cloud_a2">View the Project on GitHub <small>andrewbeng89/cloud_a2</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/andrewbeng89/cloud_a2/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/andrewbeng89/cloud_a2/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/andrewbeng89/cloud_a2">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>Andrew's Big Data Cloud Computing Problem</h1>
+
+<p>The data I have chosen for this assignment is taken from the <a href="https://github.com/blog/466-the-2009-github-contest">2009 GitHub Contest</a>. The dataset for this competition included the following data files in text format:</p>
+
+<h2>data.txt</h2>
+
+<p>This is the main dataset.  Each line is of the format :
+which represents a user watching a repository.  There are 440,237 records
+in this file, each a single user id and a single repository id seperated
+by a colon.  The data looks something like this (information from contest readme):</p>
+
+<pre><code>43642:123344
+742:22132
+5414:2373
+8660:1160
+10218:409
+301:6979
+</code></pre>
+
+<h2>repos.txt</h2>
+
+<p>This file lists out the 120,867 repositories that are used in the data.txt
+set, providing the repository name, date it was created and (if applicable)
+the repository id that it was forked off of.  The data looks like this:</p>
+
+<pre><code>123335:seivan/portfolio_python,2009-02-18
+123336:sikanrong/Nautilus-OGL,2009-05-19
+123337:edlebowitz/Downloads,2009-05-05
+123338:DylanFM/roro-faces,2009-05-31,13635
+123339:amazingsyco/technicolor-networking,2008-11-22
+123340:netzpirat/radiant-scoped-admin-extension,2009-02-27,53611
+123341:panchenliang/tuxedo-bank-server,2009-05-19
+</code></pre>
+
+<h2>lang.txt</h2>
+
+<p>The last dataset included is the language breakdown data.  This lists the
+languages we could identify in each repository - only 73,496 repositories
+have language data that we have calculated, but it is data available to us
+so if you want to use it for classifications or something, feel free. Each
+line of this file lists the repository id, then a comma delimited list of 
+";" entries containing each major language found and the number
+of lines of code for that language in the project.  The data looks like this:</p>
+
+<pre><code>57493:C;29382
+73920:JavaScript;9759,ActionScript;12781
+106774:Perl;4449
+123201:JavaScript;148,Ruby;16079
+65707:Ruby;29998
+98561:JavaScript;217,Ruby;4800900
+</code></pre>
+
+<h2>The Problem</h2>
+
+<p>The problems I have designed for this assignment are as follows:</p>
+
+<ul>
+<li>Which programming language can be found across the most number of repositories?</li>
+<li>How many repositories does this language appear in?</li>
+<li>Based on the data provided, which GitHub repository is the most watched by fellow GitHubbers?</li>
+<li>How many watchers are following this repository?</li>
+<li>What is the primary programming language used in this repository?</li>
+</ul><h2>The BigData Tutorial</h2>
+
+<h3>Cloud Platform</h3>
+
+<p>The public cloud platform that you will be using for this tutorial is <a href="http://aws.amazon.com/ec2/">Amazon EC2</a> on a single Ubuntu Server instance. Once your EC2 instance has been provisioned and is running, follow these steps:</p>
+
+<ol>
+<li>Install node.js on the EC2 instance by following the steps <a href="http://iconof.com/blog/how-to-install-setup-node-js-on-amazon-aws-ec2-complete-guide/">here</a>
+</li>
+<li>
+<p>Install mongodb NoSQL database system via the command line:</p>
+
+<p><code>npm install mongodb -g</code></p>
+</li>
+<li>
+<p>Install git on via the command line:</p>
+
+<p><code>sudo apt-get install git</code></p>
+</li>
+<li><p>Setup an account and new database on <a href="https://mongolab.com">MongoLab</a>, and note shell and URI connection parameters</p></li>
+<li>
+<p>From the command line of the EC2 instance, clone this project:</p>
+
+<p><code>git clone git://github.com/andrewbeng89/cloud_a2.git</code></p>
+</li>
+<li><p>cd to the cloud_a2 project root folder</p></li>
+</ol><hr><h3>Data Preparation</h3>
+
+<p>I have converted the data.txt and repos.txt files (located in the data directory in this project) to .csv files by finding and replacing all colons with commas and added appropriate first row headers. The conversion to .csv will facilitate the import of the data into the newly created MongoLab database. The data for data.csv now looks like this:</p>
+
+<pre><code>user_id,repo_id
+1,1
+2,2
+3,3
+</code></pre>
+
+<p>While the data for repos.csv now looks like this:</p>
+
+<pre><code>repo_id,repo_name,date_created,forked_from
+1,richardc/perl-number-compare,2009-02-26
+2,axiomsoftware/axiom-inspector,2009-05-09
+3,rails/open_id_authentication,2008-05-29
+</code></pre>
+
+<p>The lang.txt file will converted to lang.json as each repository possible has multiple languages. The conversion to json file will be invoked via a node.js module form the command line:</p>
+
+<pre><code>node load_lang.js
+</code></pre>
+
+<p>The single row from lang.txt below will correspond to the JSON object beneath it:</p>
+
+<pre><code>8213:Ruby;395056,JavaScript;802
+</code></pre>
+
+<div class="highlight"><pre><span class="p">{</span>
+    <span class="s2">"repo_id"</span><span class="o">:</span> <span class="s2">"8213"</span><span class="p">,</span>
+    <span class="s2">"langs"</span><span class="o">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">"_id"</span><span class="o">:</span> <span class="p">{</span>
+                <span class="s2">"$oid"</span><span class="o">:</span> <span class="s2">"51243dc0b2f3c8081f000002"</span>
+            <span class="p">},</span>
+            <span class="s2">"lang"</span><span class="o">:</span> <span class="s2">"Ruby"</span><span class="p">,</span>
+            <span class="s2">"lines"</span><span class="o">:</span> <span class="s2">"395056"</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">"_id"</span><span class="o">:</span> <span class="p">{</span>
+                <span class="s2">"$oid"</span><span class="o">:</span> <span class="s2">"51243dc0b2f3c8081f000001"</span>
+            <span class="p">},</span>
+            <span class="s2">"lang"</span><span class="o">:</span> <span class="s2">"JavaScript"</span><span class="p">,</span>
+            <span class="s2">"lines"</span><span class="o">:</span> <span class="s2">"802"</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+<hr><h3>Loading Data into MongoLab</h3>
+
+<p>Now that data.csv, repos.csv and lang.json are prepared, it is time to upload the data to MongoLab Mongo-as-a-Service! I have prepared the mongoinsert_lang_data, mongoinsert_repo_data and mongoinsert_watch_data bash script files to facilitate the batch uploads to MongoLab. However the host, database, user and password parameters will have to be changed to match those from the database you created earlier. For mongoinsert_lang_data, update the parameters accordingly:</p>
+
+<pre><code>mongoimport -h &lt;host_of_created_database&gt; -d &lt;name_of_created_database&gt; -u &lt;user&gt; -p &lt;password&gt; -c langmodels --type json --file ./data/lang.json --jsonArray
+</code></pre>
+
+<p>Once the mongodb parameters have been updated for all three bash scripts, upload the data to MongoLab by executing the scripts in the EC2 command line:</p>
+
+<pre><code>./mongoinsert_lang_data
+./mongoinsert_repo_data
+./mongoinsert_watch_data
+</code></pre>
+
+<p>Refreshing the MongoLab admin console for the database will show that three new collections have been made:</p>
+
+<ul>
+<li>repomodels: The collection of repository metadata objects corresponding to repos.txt</li>
+<li>langmodels: The collection of repository-languages objects corresponding to lang.txt</li>
+<li>watchmodels: The collection of user_id - repo_id objects of users watching repositories corresponding to data.txt</li>
+</ul><hr><h3>MapReduce with node.js and mongoosejs</h3>
+
+<p>In order to solve the problems stated earlier, I have created a node.js module that will perform MapReduce on the database collections using the mongoosejs mongodb driver for node. The mongoose database connection parameters in map_reduce.js would have to be updated to those for your database:</p>
+
+<pre><code>mongoose.connect('mongodb://&lt;user&gt;:&lt;password&gt;@&lt;host_of_created_database&gt;/&lt;name_of_created_database&gt;');
+</code></pre>
+
+<p>Once this has been updated, via the EC2 command line, execute the module:</p>
+
+<pre><code>node map_reduce.js
+</code></pre>
+
+<p>The result of the operation will be in this format:</p>
+
+<pre><code>Find the programming language that is found 
+across the most number of repositories:
+map reduce took XXXX ms
+language: XXXXXX, num_repos: XXXXX
+
+Find the repo with the most number of wathcers:
+map reduce took XXXXX ms
+most number of watchers per repo: XXXX
+repo_id: XXXXX, repo_name: XXXXXXXXXXXXX
+primary programming language of repo: XXXXX
+</code></pre>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/andrewbeng89">andrewbeng89</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
