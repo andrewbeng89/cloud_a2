@@ -7,7 +7,7 @@ The data I have chosen for this assignment is taken from the [2009 GitHub Contes
 This is the main dataset.  Each line is of the format <user_id>:<repo_id>
 which represents a user watching a repository.  There are 440,237 records
 in this file, each a single user id and a single repository id seperated
-by a colon.  The data looks something like this:
+by a colon.  The data looks something like this (information from contest readme):
 
   43642:123344
   742:22132
@@ -46,3 +46,11 @@ of lines of code for that language in the project.  The data looks like this:
   123201:JavaScript;148,Ruby;16079
   65707:Ruby;29998
   98561:JavaScript;217,Ruby;4800900
+
+## The Problem ##
+
+The problem I have designed for this assignment is as follows:
+
+* based on the data provided, which GitHub repository is the most watched by fellow GitHubbers?
+* How many watchers are following this repository?
+* What is the primary programming language used in this repository?
