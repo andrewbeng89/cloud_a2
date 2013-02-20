@@ -66,13 +66,20 @@ The public cloud platform that you will be using for this tutorial is [Amazon EC
 1. Install node.js on the EC2 instance by following the steps [here](http://iconof.com/blog/how-to-install-setup-node-js-on-amazon-aws-ec2-complete-guide/)
 2. Install mongodb NoSQL database system via the command line:
 	
-	npm install mongodb -g
+	``npm install mongodb -g``
 
 3. Install git on via the command line:
 
-	sudo apt-get install git
+	``sudo apt-get install git``
 
 4. Setup an account and new database on [MongoLab](https://mongolab.com), and note shell and URI connection parameters
+5. From the command line of the EC2 instance, clone this project:
+
+	``git clone git://github.com/andrewbeng89/cloud_a2.git``
+	
+6. cd to the cloud_a2 project root folder
+
+---------------------------------------
 
 ### Data Preparation
 
@@ -120,4 +127,12 @@ The single row from lang.txt below will correspond to the JSON object beneath it
 }
 ```
 
+---------------------------------------
+
+### Loading Data into MongoLab
+
+Now that data.csv, repos.csv and lang.json are prepared, it is time to upload the data to MongoLab Mongo-as-a-Service! I have prepared the mongoinsert_lang_data, mongoinsert_repo_data and mongoinsert_watch_data bash script files to facilitate the batch uploads to MongoLab. However the host, database, user and password parameters will have to be changed to match those from the database you created earlier. For mongoinsert_lang_data, update the parameters accordingly:
+
+	mongoimport -h <host_of_created_database> -d <name_of_created_database> -u <user> -p <password> -c langmodels --type json --file ./data/lang.json --jsonArray
+	
 
