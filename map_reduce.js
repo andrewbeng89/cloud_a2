@@ -64,7 +64,7 @@ watch.mapReduce(options, function (err, model, stats) {
   		model.$where('this.value.num_watchers == '+max_watchers).exec(function (err, docs) {
   			//console.log(docs);
   			repo.findOne({repo_id:docs[0].value.repo_id}, function (err, doc) {
-  				console.log('repo_id: ' + doc._id + ', repo_name: ' + doc.repo_name);
+  				console.log('repo_id: ' + doc.repo_id + ', repo_name: ' + doc.repo_name);
   				languages.findOne({repo_id:doc.repo_id.toString()}, function(err, doc) {
   					if (err) return handleError(err);
   					console.log('primary programming language of repo: ' + doc.langs[0].lang);
