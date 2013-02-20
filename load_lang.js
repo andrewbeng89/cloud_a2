@@ -36,7 +36,7 @@ app.get('/', routes.index);
 app.get('/users', user.list);
 
 var mongoose = require('mongoose'), watch = require('./models/watch'), repo = require('./models/repo');
-mongoose.connect('mongodb://test:test1234@ds051067.mongolab.com:51067/is429_a2');
+mongoose.connect('mongodb://test:test1234@ds039467.mongolab.com:39467/cloud_a2');
 
 function TrimColon(text) {
   	return text.toString().replace(/^(.*?):*$/, '$1');
@@ -69,7 +69,3 @@ function load_lang() {
 }
 
 load_lang();
-
-http.createServer(app).listen(app.get('port'), function(){
-  console.log("Express server listening on port " + app.get('port'));
-});
