@@ -60,14 +60,14 @@ watch.mapReduce(options, function (err, model, stats) {
 	function (err, res) {
   		if (err) return handleError(err);
   		max_watchers = res[0].maxWatchers;
-  		console.log(max_watchers);
+  		console.log('most number of watchers per repo: ' + max_watchers);
   		model.$where('this.value.num_watchers == '+max_watchers).exec(function (err, docs) {
-  			console.log(docs);
+  			//console.log(docs);
   			repo.findOne({repo_id:docs[0].value.repo_id}, function (err, doc) {
-  				console.log(doc.repo_name);
+  				console.log('repo_id: ' + doc._id + ', repo_name: ' + doc.repo_name);
   				languages.findOne({repo_id:doc.repo_id.toString()}, function(err, doc) {
   					if (err) return handleError(err);
-  					console.log(doc);
+  					console.log('primary programming language of repo: ' + doc.langs[0].lang);
   				});
   				if (err) return handleError(err);
   			});
