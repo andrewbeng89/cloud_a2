@@ -1,0 +1,3 @@
+#!/bin/bash
+
+mongoimport -h ds039467.mongolab.com:39467 -d cloud_a2 -u test -p test1234 -c watchmodels --type csv --file ./data/data.csv --headerline
