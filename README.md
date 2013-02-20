@@ -64,8 +64,14 @@ The problems I have designed for this assignment are as follows:
 The public cloud platform that you will be using for this tutorial is [Amazon EC2](http://aws.amazon.com/ec2/) on a single Ubuntu Server instance. Once your EC2 instance has been provisioned and is running, follow these steps:
 
 1. Install node.js on the EC2 instance by following the steps [here](http://iconof.com/blog/how-to-install-setup-node-js-on-amazon-aws-ec2-complete-guide/)
-2. Install mongodb NoSQL database system via the command line: npm install mongodb -g
-3. Install git on via the command line: sudo apt-get install git
+2. Install mongodb NoSQL database system via the command line:
+	
+	npm install mongodb -g
+
+3. Install git on via the command line:
+
+	sudo apt-get install git
+
 4. Setup an account and new database on [MongoLab](https://mongolab.com), and note shell and URI connection parameters
 
 ### Data Preparation
