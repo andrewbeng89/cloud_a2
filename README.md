@@ -49,8 +49,22 @@ of lines of code for that language in the project.  The data looks like this:
 
 ## The Problem ##
 
-The problem I have designed for this assignment is as follows:
+The problems I have designed for this assignment are as follows:
 
-* based on the data provided, which GitHub repository is the most watched by fellow GitHubbers?
+* Which programming language can be found across the most number of repositories?
+* How many repositories does this language appear in?
+* Based on the data provided, which GitHub repository is the most watched by fellow GitHubbers?
 * How many watchers are following this repository?
 * What is the primary programming language used in this repository?
+
+## The BigData Tutorial ##
+
+### Cloud Platform
+
+The public cloud platform that you will be using for this tutorial is [Amazon EC2](http://aws.amazon.com/ec2/) on a single Ubuntu Server instance. Once your EC2 instance has been provisioned and is running, follow these steps:
+
+1. Install node.js on the EC2 instance by following the steps [here](http://iconof.com/blog/how-to-install-setup-node-js-on-amazon-aws-ec2-complete-guide/)
+2. Install mongodb NoSQL database system via the command line
+	sudo npm install mongodb -g
+3. Install git on via the command line
+	sudo apt-get install git
