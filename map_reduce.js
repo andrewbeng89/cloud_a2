@@ -35,6 +35,26 @@ app.get('/users', user.list);
 var mongoose = require('mongoose'), watch = require('./models/watch'), repo = require('./models/repo'), languages = require('./models/lang');
 mongoose.connect('mongodb://test:test1234@ds039467.mongolab.com:39467/cloud_a2');
 
+console.log('\nFind the programming language that found across the most number of repositories:');
+var lang_map_options = {
+	map : function() {
+		for (var i = 0; i < this.langs.length; i++) {
+			emit(this.langs[i].lang, 1);
+		}
+	},
+	reduce : function(k, count) {
+		var reducedValue = {lang:k, num_repos: Array.sum(count).length};
+		return reducedValue;
+	},
+	out : {
+		replace : 'repos_per_language'
+	},
+	verbose : true
+}
+languages.mapReduce(lang_map_options, function(err, model, stats) {
+	console.log(stats);
+});
+
 var options = {
 	map : function() {
 		emit(this.repo_id, this.user_id);
@@ -48,6 +68,8 @@ var options = {
 	},
 	verbose : true
 }
+
+console.log('\nFind the repo with the most number of wathcers:');
 watch.mapReduce(options, function (err, model, stats) {
 	console.log('map reduce took %d ms', stats.processtime);
 	var max_watchers;
