@@ -51,9 +51,23 @@ var lang_map_options = {
 	verbose : true
 }
 languages.mapReduce(lang_map_options, function(err, model, stats) {
-	console.log('\nFind the programming language that found across the most number of repositories:');
+	console.log('\nFind the programming language that is found \nacross the most number of repositories:');
 	console.log('map reduce took %d ms', stats.processtime);
-	console.log(stats);
+	model.aggregate({
+		$group: { _id: 'null', maxRepos: { $max: '$value.num_repos' }}
+	},
+	{
+		$project: { _id: 0, maxRepos: 1 }
+	}, 
+	function (err, res) {
+  		if (err) return handleError(err);
+  		//console.log(res);
+  		max_repos = res[0].maxRepos;
+  		model.$where('this.value.num_repos == '+max_repos).exec(function (err, docs) {
+  			console.log('language: ' + docs[0]._id + ', num_repos: ' + docs[0].value.num_repos);
+  			if (err) return handleError(err);
+  		});
+	});
 });
 
 var options = {
